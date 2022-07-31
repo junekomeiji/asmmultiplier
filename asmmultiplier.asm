@@ -31,6 +31,14 @@ main:
 	
 	mov rdi, [num1]
 	mov rsi, [num2]
+	xor rax, rax
+	xor r8, r8
+	xor r9, r9
+	call shlmul
+	
+	mov rdi, string3
+	mov rsi, rax
+	call printf
 	
 	leave
 	ret
@@ -52,6 +60,18 @@ shlmul:
 	
 	cmp rcx, 63
 	je exit
+	inc rcx
+	
+	shr rsi, 1
+	jnc shlmul
+	
+	mov r8, rdi		; put in num 1
+
+	mov r9, rcx		; put in counter
+	dec r9			; counter - 1
+	
+	shl r8, [r9]		; shl r9 times
+	add rax, r8
 	
 	
 				
