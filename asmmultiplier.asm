@@ -5,7 +5,8 @@ section .data
 	num2 dq 13
 	
 	string1 db "The two input numbers are %d and %d.", 10, 0
-	string2 db "The result of multiplying them together with the built in x86 instruction is %d."
+	string2 db "The result of multiplying them together with the built in x86 instruction is %d.", 10, 0
+	string3 db "The result of multiplying them together by only shift left is %d.", 10, 0
 	
 section .bss
 section .text
@@ -20,15 +21,40 @@ main:
 	mov rdx, [num2]
 	call printf
 	
-	mov rax, [num1]
-	mov rbx, [num2]
-	imul rax, rbx
+	mov rdi, [num1]
+	mov rsi, [num2]
+	call defaultmul
 	
 	mov rdi, string2
 	mov rsi, rax
 	call printf
 	
+	mov rdi, [num1]
+	mov rsi, [num2]
+	
 	leave
 	ret
 	
 		
+defaultmul:				; return value in rax
+	push rbp
+	mov rbp, rsp
+	
+	imul rdi, rsi
+	mov rax, rdi
+	
+	leave
+	ret
+	
+shlmul:
+	push rbp
+	mov rbp, rsp
+	
+	cmp rcx, 63
+	je exit
+	
+	
+				
+exit:
+	leave
+	ret
